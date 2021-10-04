@@ -38,7 +38,7 @@ class ParseInt
   STRINGS_NUMBERS = NUMBERS_STRINGS.invert
 
   def parse_int(string, res = '')
-    return 1_000_000 if string.include?('millon')
+    return 1_000_000 if string.include?('million')
 
     string = string.gsub(' and ', ' ')
     thousands = string.split(' thousand ')
@@ -59,6 +59,8 @@ class ParseInt
       elsif word == 'thousand'
         result *= 1000
       else
+        return 0 unless word.index('-')
+
         ws = word.split('-')
         ws.each { |w| result += STRINGS_NUMBERS[w] }
       end
@@ -68,14 +70,6 @@ class ParseInt
   end
 end
 
-pi = ParseInt.new
-# pi.parse_int('two')
-
-# p pi.parse_int('seven hundred eighty-three thousand nine hundred and nineteen')
-# p pi.parse_int('eight hundred thousand three hundred forty-eight')
-p pi.parse_int('eight hundred thousand three hundred eight')
-p pi.parse_int('eight hundred thousand eight')
-p pi.parse_int('eight')
-p pi.parse_int('one hundred and seven ')
-p pi.parse_int('eight hundred thousand')
-p pi.parse_int('a millon')
+def parse_int(string)
+  ParseInt.new.parse_int(string)
+end
